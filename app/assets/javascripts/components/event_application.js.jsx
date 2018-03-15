@@ -1,6 +1,6 @@
 var EventApplication = React.createClass({
   getInitialState: function() {
-    return {events: []};
+    return {events: [], sort: "name", order: "asc"};
   },
   componentDidMount: function() {
     this.getDataFromApi();
@@ -13,11 +13,23 @@ var EventApplication = React.createClass({
     events.push(event);
     this.setState({events: events});
   },
+  handleDeleteRecord: function(event) {
+    var events = this.state.events.slice();
+    var index = events.indexOf(event);
+    events.splice(index, 1);
+    this.setState({events: events});
+  },
+  handleUpdateRecord: function(old_event, new_event) {
+    var events = this.state.events.slice();
+    var index = events.indexOf(old_event);
+    events.splice(index, 1, event);
+    this.setState({events: events});
+  },
   getDataFromApi: function() {
     var self = this;
     $.ajax({
       url: '/api/events',
-      type: 'Get',
+      type: 'GET',
       success: function(data) {
         self.setState({events: data});
       },
@@ -26,11 +38,27 @@ var EventApplication = React.createClass({
       }
     })
   },
+  handleSortColumn: function(name, order) {
+    if(this.state.sort != name) {
+      order = 'asc';
+    }
+    $.ajax({
+      url: '/api/events',
+      data: {sort_by: name, order: order},
+      method: 'GET',
+      success: function(data) {
+        this.setState({events: data, sort: name, order: order});
+      }.bind(this),
+      error: function(xhr, status, error) {
+        console.log('Cannot sort the column', error);
+      }
+    });
+  },
   render: function() {
       return(
         <div className="container">
           <div className="jumbotorn">
-            <h1>React Tutorial</h1>
+            <h1>Personal Details</h1>
           </div>
           <div className="row">
             <div className="col-md-4">
@@ -42,7 +70,12 @@ var EventApplication = React.createClass({
           </div>
           <div className="row">
             <div className="col-md-12">
-              <EventTable events={this.state.events}/>
+              <EventTable events={this.state.events}
+                sort={this.state.sort}
+                order={this.state.order}
+                handleDeleteRecord={this.handleDeleteRecord}
+                handleUpdateRecord={this.handleUpdateRecord}
+                handleSortColumn={this.handleSortColumn}/>
             </div>
           </div>
         </div>

@@ -45,7 +45,7 @@ var NewForm = React.createClass({
   handleChange: function(event) {
     var input_name = event.target.name;
     var value = event.target.value;
-    this.setState({[input_name] : value})
+    this.setState({[input_name]: value})
   },
   render: function() {
     return (
