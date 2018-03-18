@@ -61,3 +61,9 @@ gem 'autoprefixer-rails'
 gem 'react-rails', '~> 2.2.0'
 
 gem 'jquery-rails'
+
+gem 'devise', '~> 4.2'
+
+gem 'cancancan'
+
+gem 'rolify'

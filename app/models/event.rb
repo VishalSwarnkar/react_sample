@@ -1,2 +1,3 @@
-class Event < ApplicationRecord
+class Event < ActiveRecord::Base
+  belongs_to :user
 end

@@ -1,6 +1,9 @@
 module Api
   class EventsController < ApplicationController
+    # load_and_authorize_resource
+    # before_action :authenticate_user!
     before_action :set_event, only: [:destroy, :update]
+    # before_action :authenticate_user!, except: [:index]
 
     def index
       render json: Event.order(sort_by + ' ' + order)
@@ -14,6 +17,7 @@ module Api
 
     def create
       event = Event.new(event_params)
+      event.user = current_user
       if event.save
         render json: event
       else

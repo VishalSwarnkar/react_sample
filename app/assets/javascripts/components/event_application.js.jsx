@@ -57,9 +57,6 @@ var EventApplication = React.createClass({
   render: function() {
       return(
         <div className="container">
-          <div className="jumbotorn">
-            <h1>Personal Details</h1>
-          </div>
           <div className="row">
             <div className="col-md-4">
               <SearchForm handleSearch={this.handleSearch} />
